@@ -8,9 +8,9 @@ project:
 capture:
   build:
     cleanCommands:
-    - shell: [dotnet, WebGoat.NET.sln, '/t:Clean']
+    - shell: [dotnet, clean]
     buildCommands:
-    - shell: [dotnet, WebGoat.NET.sln, '/t:Build']
+    - shell: [dotnet, build]
   fileSystem:
     ears:
       extensions: [ear]
@@ -32,17 +32,14 @@ capture:
     ruby:
       files:
       - directory: ${project.projectDir}
-    typescript:
-      files:
-      - directory: ${project.projectDir}
     wars:
       extensions: [war]
       files:
       - directory: ${project.projectDir}
 analyze:
-    mode: central
-coverity:
-    cov-analyze: ["--webapp-security", "--enable-audit-mode"]
+  mode: central
+  coverity:
+    cov-analyze: ["--all", "--webapp-security", "--enable-audit-mode"]
 install:
   coverity:
     version: default
