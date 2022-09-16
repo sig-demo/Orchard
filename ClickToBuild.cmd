@@ -47,6 +47,7 @@ IF "%solution%" == "" SET solution=src\Orchard.sln
 
 lib\nuget\nuget.exe restore %solution%
 
+
 %msbuild% /t:%target% %project% /p:Solution=%solution% /m
 
 :end
