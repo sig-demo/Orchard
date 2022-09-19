@@ -13,6 +13,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Set up Visual Studio environment
+      uses: ilammy/msvc-dev-cmd@v1
       
       
     # Perform Polaris Analysis
