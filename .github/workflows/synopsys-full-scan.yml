@@ -22,7 +22,7 @@ jobs:
     # Perform Polaris Analysis
     - name: Polaris (SAST)
       run: |
-        nuget restore /src/
+        nuget restore /src/NuGet.config
         curl -fLOsS $POLARIS_SERVER_URL/api/tools/polaris_cli-linux64.zip
         unzip -d /tmp -jo polaris_cli-linux64.zip
         /tmp/polaris analyze -w
