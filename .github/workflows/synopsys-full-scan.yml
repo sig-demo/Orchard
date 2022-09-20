@@ -14,14 +14,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Restore
+      run: dotnet restore
    
     # Perform Polaris Analysis
     - name: Polaris (SAST)
       run: |
-        nuget restore -ConfigFile /src/NuGet.config
         curl -fLOsS $POLARIS_SERVER_URL/api/tools/polaris_cli-linux64.zip
         unzip -d /tmp -jo polaris_cli-linux64.zip
         /tmp/polaris analyze -w
+        
     # Perform Software Composition Analysis             
     - name: Black Duck (SCA)
       run: |
