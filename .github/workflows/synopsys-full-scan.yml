@@ -20,6 +20,7 @@ jobs:
     # Perform Static Analysis
     - name: Polaris (SAST)
       run: |
+        nuget restore /src/Orchard.sln
         certutil -urlcache -split -f "${{ secrets.POLARIS_SERVER_URL }}/api/tools/polaris_cli-win64.zip" polaris.zip
         7z e "-o." polaris.zip
         ./polaris.exe analyze -w
