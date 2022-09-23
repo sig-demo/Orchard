@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: Ubuntu-latest
+    runs-on: Windows-latest
     env:
       POLARIS_SERVER_URL:  ${{ secrets.POLARIS_SERVER_URL }}
       POLARIS_ACCESS_TOKEN:  ${{ secrets.POLARIS_ACCESS_TOKEN }}
@@ -14,27 +14,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 6.0.x
-    - name: Restore
-      run: dotnet restore
-   
-    # Perform Polaris Analysis
+    - name: Set up Visual Studio environment
+      uses: ilammy/msvc-dev-cmd@v1
+        
+    # Perform Static Analysis
     - name: Polaris (SAST)
       run: |
-        nuget restore src/Orchard.sln
-        curl -fLOsS $POLARIS_SERVER_URL/api/tools/polaris_cli-linux64.zip
-        unzip -d /tmp -jo polaris_cli-linux64.zip
-        /tmp/polaris analyze -w
+        certutil -urlcache -split -f "${{ secrets.POLARIS_SERVER_URL }}/api/tools/polaris_cli-win64.zip" polaris.zip
+        7z e "-o." polaris.zip
+        ./polaris.exe analyze -w
         
     # Perform Software Composition Analysis             
     - name: Black Duck (SCA)
       run: |
-          bash <(curl -s -L https://detect.synopsys.com/detect7.sh) '--blackduck.url=$BLACKDUCK_URL \
-             --blackduck.api.token=$BLACKDUCK_API_TOKEN \
-             --detect.project.name=sig-demo/Orchard \
-             --detect.project.version.name=main \
-             --detect.blackduck.signature.scanner.snippet.matching=SNIPPET_MATCHING \
-             --detect.blackduck.signature.scanner.upload.source.mode=true'
+         powershell "[Net.ServicePointManager]::SecurityProtocol = 'tls12'; irm https://detect.synopsys.com/detect7.ps1?$(Get-Random) | iex; detect" '--blackduck.url=$env:BLACKDUCK_URL `
+          --blackduck.api.token=$env:BLACKDUCK_API_TOKEN `
+           --detect.project.name=sig-demo/Orchard `
+           --detect.project.version.name=main `
+           --detect.blackduck.signature.scanner.snippet.matching=SNIPPET_MATCHING `
+           --detect.blackduck.signature.scanner.upload.source.mode=true `
