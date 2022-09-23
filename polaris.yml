@@ -8,7 +8,7 @@ project:
 capture:
   build:
     buildCommands:
-    - shell: [Orchard/deploy.cmd]
+    - shell: [deploy.cmd]
   fileSystem:
     ears:
       extensions: [ear]
