@@ -8,7 +8,7 @@ project:
 capture:
   build:
     buildCommands:
-    - shell: [msbuild, /t:FastBuild, Orchard.proj, /p:Solution=src\Orchard.sln, /p:Configuration=Debug, /p:Platform="Any CPU"]
+    - shell: [msbuild, /t:FastBuild, Orchard.proj, /p:Solution=src\Orchard.sln, /p:Configuration=Debug, /p:Platform='Any CPU']
   fileSystem:
     ears:
       extensions: [ear]
