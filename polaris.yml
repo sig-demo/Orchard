@@ -7,10 +7,8 @@ project:
     date: ${scm.git.commit.date}
 capture:
   build:
-    cleanCommands:
-    - shell: [dotnet, clean]
     buildCommands:
-    - shell: [dotnet, build]
+    - shell: [ClickToBuild.cmd]
   fileSystem:
     ears:
       extensions: [ear]
